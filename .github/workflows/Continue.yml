@@ -18,7 +18,10 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Test inputs on push event
+
+    
+      - if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push'}}
+        name: Test inputs on push event
         run: |
           echo "source_ami=${{ inputs.source_ami }}" >> $GITHUB_ENV
           echo "ami_name=${{ inputs.ami_name }}" >> $GITHUB_ENV
