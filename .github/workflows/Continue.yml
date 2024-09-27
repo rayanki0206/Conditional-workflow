@@ -3,10 +3,29 @@ on:
   push:
     branches:
       - master
+  workflow_dispatch:
+    inputs:
+      source_ami:
+       description: 'Source AMI ID'
+       required: true
+       default: 'ami-054d3ba7b0317b198'
+      ami_name:
+       description: 'The name of the AMI to build'
+       required: true
+       default: 'Exelixis-AMI-Ubuntu-22.04'
+    
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
+      - name: Test inputs on push event
+        run: |
+          echo "source_ami=${{ inputs.source_ami }}" >> $GITHUB_ENV
+          echo "ami_name=${{ inputs.ami_name }}" >> $GITHUB_ENV
+      - name: print env variables
+        run: |
+          echo "source_ami=${{env.source_ami}}
+          echo "ami_name=${{env.ami_name}}
       - name: Get code
         uses: actions/checkout@v3
       - name: Cache dependencies
